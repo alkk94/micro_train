@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Base</title>
+    {{ turbo() }}
+  </head>
+  <body>
+    {% block content %}{% endblock %} {% include "current_speed.html" %} {%
+    include "current_station.html" %}
+  </body>
+</html>
