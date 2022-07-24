@@ -4,6 +4,10 @@ from turbo_flask import Turbo
 import threading
 import time
 
+app = Flask(__name__)
+
+turbo = Turbo(app)
+
 
 def update_data(seconds, file_name, div_id):
     with app.app_context():
@@ -13,23 +17,12 @@ def update_data(seconds, file_name, div_id):
                 render_template(file_name), div_id))
 
 
-def update_current_speed():
-    update_data(10, 'current_speed.html', 'current_speed')
-
-
-def update_current_station():
-    update_data(180, 'current_station.html', 'current_station')
-
-
-app = Flask(__name__)
-
-turbo = Turbo(app)
-
-
 @app.before_first_request
 def before_first_request():
-    threading.Thread(target=update_current_speed).start()
-    threading.Thread(target=update_current_station).start()
+    threading.Thread(target=lambda: update_data(
+        10, 'current_speed.html', 'current_speed')).start()
+    threading.Thread(target=lambda: update_data(
+        180, 'current_station.html', 'current_station')).start()
 
 
 @app.route('/')
